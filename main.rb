@@ -79,6 +79,32 @@ def check_in(stock, person, new_home)
   puts "\n#{response} has been added to inventory..."
 end
 
+def dog_adder(stock, customers)
+  puts "What's the dog called?"
+  n = gets.chomp.downcase.to_s
+  puts "What breed is it?"
+  b = gets.chomp.downcase.to_s
+  puts "How old is it?"
+  a= gets.chomp.downcase.to_i
+  puts "What sex is it?"
+  s = gets.chomp.downcase.to_sym
+  puts "And what's it's favourite toy?"
+  t = gets.chomp.downcase.to_s
+  new_dog = Animal.new(n, b, a, s, t)
+  puts "Add to (i)nventory or a (c)lient?"
+  response = gets.chomp.downcase
+  if response == "i"
+    stock[new_dog.name.downcase] = new_dog
+    puts "#{new_dog.name} has been added to inventory..."
+    puts stock.values.join("\n")
+  else
+    puts customers.values.join("\n")
+    puts "Which client?"
+    answer = gets.chomp.downcase.to_s
+    customers[answer].pets[new_dog.name.downcase] = new_dog
+    puts "#{new_dog.name} has been added to our records for #{answer}."
+  end
+ end
 
 #run the app
 
@@ -89,11 +115,13 @@ while condition
   puts "ANIMAL SHELTER MANAGEMENT SYSTEM"
   puts "----------------------------------"
   puts "\nPlease select an option:"
-  puts "Get (C)lient Information"
-  puts "(A)dd A New Client"
-  puts "(D)isplay Current inventory"
-  puts "Check-(O)ut a Dog"
-  puts "Check-(I)n a Dog"
+  puts "Get (C)lient information"
+  puts "(A)dd a new client"
+  puts "(D)isplay current inventory"
+  puts "Check-(o)ut a dog"
+  puts "Check-(i)n a dog"
+  puts "(V)iew dogs on file for a particular client"
+  puts "Add a new dog to (r)ecords"
   response = gets.chomp.downcase
   case response
    when 'c'
@@ -104,7 +132,7 @@ while condition
       puts hq.inventory.values.join("\n")
     when 'o'
       puts hq.clients.values.join("\n")
-      puts "\nwho is checking-out the animal?"
+      puts "\nWho is checking-out the animal?"
       buyer = gets.chomp.downcase.to_s
       check_out(hq.inventory, hq.clients[buyer])
       puts "\nNew inventory..."
@@ -115,6 +143,13 @@ while condition
       seller = gets.chomp.downcase.to_s
       check_in(hq.clients[seller].pets, hq.clients[seller], hq.inventory)
       puts hq.inventory.values.join("\n")
+    when 'v'
+      puts hq.clients.values.join("\n")
+      puts "\nWho's pets would you like to see?"
+      view = gets.chomp.downcase
+      puts hq.clients[view].pets.values.join("\n")
+    when 'r'
+      dog_adder(hq.inventory, hq.clients)
   end
   puts "\nWould you like to run the program again or (q)uit?"
   condition = false if gets.chomp.downcase == "q"
