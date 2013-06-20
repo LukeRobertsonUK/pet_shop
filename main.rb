@@ -63,14 +63,21 @@ def check_out(stock, person)
   puts stock.values.join("\n")
   puts "-----------------------------------------"
   response = gets.chomp.downcase
-  dog_to_check_out = stock[response]
   person.pets[response] = stock[response]
   stock.delete(response)
   puts "\n#{response} now belongs to #{person.name}!"
 end
 
-
-
+def check_in(stock, person, new_home)
+  puts "Which of the following would you like to check-in?"
+  puts "-----------------------------------------"
+  puts stock.values.join("\n")
+  puts "-----------------------------------------"
+  response = gets.chomp.downcase
+  new_home[response] = stock[response]
+  stock.delete(response)
+  puts "\n#{response} has been added to inventory..."
+end
 
 
 #run the app
@@ -102,16 +109,17 @@ while condition
       check_out(hq.inventory, hq.clients[buyer])
       puts "\nNew inventory..."
       puts hq.inventory.values.join("\n")
+    when 'i'
+      puts hq.clients.values.join("\n")
+      puts "\nwho is checking-in the animal?"
+      seller = gets.chomp.downcase.to_s
+      check_in(hq.clients[seller].pets, hq.clients[seller], hq.inventory)
+      puts hq.inventory.values.join("\n")
   end
   puts "\nWould you like to run the program again or (q)uit?"
   condition = false if gets.chomp.downcase == "q"
 end
 
 
-binding.pry
 
 
-
-
-
-binding.pry
