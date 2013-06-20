@@ -11,7 +11,7 @@ class Animal
   end
 
   def to_s
-    "#{name} is a #{age} year-old #{sex}#{breed} and loves it's #{fav_toy}"
+    "#{name} / #{breed} is aged #{age} and loves a #{fav_toy}"
   end
 
 end
