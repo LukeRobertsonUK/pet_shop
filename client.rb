@@ -11,17 +11,9 @@ class Client
 
 
   def to_s
-    "#{name} has #{pets.size} pets."
+    "name = #{name}; age = #{age}; sex = #{sex}; children = #{num_kids}; pets = #{pets.size}."
   end
 
-  def full_client_profile
-    puts "Name: #{name}"
-    puts "Age: #{age}"
-    puts "Sex: #{sex}"
-    puts "Number of children: #{num_kids}"
-    puts "************* EXISTING PETS *************"
-    pets.each  do |k, v|
-      puts v
-    end
-end
+
+
 end

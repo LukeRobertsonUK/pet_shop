@@ -19,12 +19,12 @@ people = [
 
 #populating client list
 people.each do |person|
-  hq.clients[person.name] = person
+  hq.clients[person.name.downcase] = person
 end
 
 #initializing existing pets
-hq.clients["Luke"].pets["Olaff"] = Animal.new("Olaff", "Poodle", 2, :male, "rubber duck")
-hq.clients["Betty"].pets["Bernie"] = Animal.new("Bernie", "Bulldog", 3, :male, "toy sheep")
+hq.clients["luke"].pets["olaff"] = Animal.new("Olaff", "Poodle", 2, :male, "rubber duck")
+hq.clients["betty"].pets["bernie"] = Animal.new("Bernie", "Bulldog", 3, :male, "toy sheep")
 
 #initialize existing inventory
 animals = [
@@ -40,36 +40,75 @@ animals = [
 
 #filling inventory hash with the animals
 animals.each do |animal|
-  hq.inventory[animal.name] = animal
+  hq.inventory[animal.name.downcase] = animal
 end
 
-puts hq.clients.values.join(",\n")
+def add_new_client(object)
+  puts "What is the client's name?"
+  n = gets.chomp.to_s
+  puts "what is the client's age?"
+  a = gets.chomp.to_i
+  puts "what is the client's sex?"
+  s = gets.chomp.to_sym
+  new_person = Client.new(n, a, s)
+  object[new_person.name.downcase] = new_person
+  puts "You added #{new_person.name} to your client list."
+  puts object.values.join("\n")
+end
+
+
+def check_out(stock, person)
+  puts "Which of the following would you like to check-out?"
+  puts "-----------------------------------------"
+  puts stock.values.join("\n")
+  puts "-----------------------------------------"
+  response = gets.chomp.downcase
+  dog_to_check_out = stock[response]
+  person.pets[response] = stock[response]
+  stock.delete(response)
+  puts "\n#{response} now belongs to #{person.name}!"
+end
+
+
+
 
 
 #run the app
-puts `clear`
-puts "----------------------------------"
-puts "ANIMAL SHELTER MANAGEMENT SYSTEM"
-puts "----------------------------------"
-puts "\nPlease select an option:"
-puts "Get (C)lient Information"
-puts "(A)dd A New Client"
-puts "(D)isplay Current inventory"
-puts "Check-(O)ut a Dog"
-puts "Check-(I)n a Dog"
-response = gets.chomp.downcase
-case response
-  when 'c'
-    puts hq.clients.values.join("\n")
-  when 'd'
-    puts hq.inventory.values.join("\n")
-  when 'o'
-    hq.check_out
+
+condition = true
+while condition
+  puts `clear`
+  puts "----------------------------------"
+  puts "ANIMAL SHELTER MANAGEMENT SYSTEM"
+  puts "----------------------------------"
+  puts "\nPlease select an option:"
+  puts "Get (C)lient Information"
+  puts "(A)dd A New Client"
+  puts "(D)isplay Current inventory"
+  puts "Check-(O)ut a Dog"
+  puts "Check-(I)n a Dog"
+  response = gets.chomp.downcase
+  case response
+   when 'c'
+      puts hq.clients.values.join("\n")
+    when 'a'
+     add_new_client(hq.clients)
+    when 'd'
+      puts hq.inventory.values.join("\n")
+    when 'o'
+      puts hq.clients.values.join("\n")
+      puts "\nwho is checking-out the animal?"
+      buyer = gets.chomp.downcase.to_s
+      check_out(hq.inventory, hq.clients[buyer])
+      puts "\nNew inventory..."
+      puts hq.inventory.values.join("\n")
+  end
+  puts "\nWould you like to run the program again or (q)uit?"
+  condition = false if gets.chomp.downcase == "q"
 end
 
 
-
-
+binding.pry
 
 
 
