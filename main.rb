@@ -43,6 +43,36 @@ animals.each do |animal|
   hq.inventory[animal.name] = animal
 end
 
+puts hq.clients.values.join(",\n")
+
+
+#run the app
+puts `clear`
+puts "----------------------------------"
+puts "ANIMAL SHELTER MANAGEMENT SYSTEM"
+puts "----------------------------------"
+puts "\nPlease select an option:"
+puts "Get (C)lient Information"
+puts "(A)dd A New Client"
+puts "(D)isplay Current inventory"
+puts "Check-(O)ut a Dog"
+puts "Check-(I)n a Dog"
+response = gets.chomp.downcase
+case response
+  when 'c'
+    puts hq.clients.values.join("\n")
+  when 'd'
+    puts hq.inventory.values.join("\n")
+  when 'o'
+    hq.check_out
+end
+
+
+
+
+
+
+
 
 
 binding.pry

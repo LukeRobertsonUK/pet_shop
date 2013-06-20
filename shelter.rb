@@ -11,4 +11,16 @@ attr_accessor :name, :address, :inventory, :clients
   def to_s
     "#{name} @ #{address} has #{inventory.size} animals needing new homes"
   end
+
+
+  def check_out
+    puts "What is your name?"
+    if clients.keys.include?(gets.chomp.downcase)
+      customer = gets.chomp.downcase
+      puts "You are #{clients[customer]}"
+    end
+  end
+
+
+
 end
