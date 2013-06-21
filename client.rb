@@ -13,10 +13,22 @@ class Client
     "name = #{name}; age = #{age}; sex = #{sex}; children = #{num_kids}; pets = #{pets.size}."
   end
 
-  def give_up(pet_name, shelter)
-    receiver = shelter
-    pet = pets.delete(pet_name.downcase)
-    shelter.inventory[pet_name.downcase] = pet
+  def display_pets
+    puts pets.values.join("\n")
+  end
+
+  def give_up(shelter)
+    display_pets
+    puts "\nWhich pet would you like to check-in?"
+    pet = pets.delete(gets.chomp.downcase)
+    shelter.inventory[pet.name.downcase] = pet
+    puts "#{pet.name} has been added to inventory for #{shelter.name}"
+  end
+
+  def dog_adder(new_dog)
+    pets[new_dog.name.downcase] = new_dog
+    puts "#{new_dog.name} has been added to #{self.name}'s pet list..."
+    puts pets.values.join("\n")
   end
 
 end

@@ -38,20 +38,7 @@ animals.each do |animal|
   hq.inventory[animal.name.downcase] = animal
 end
 
-def add_new_client(object)
-  puts "What is the client's name?"
-  n = gets.chomp.to_s
-  puts "what is the client's age?"
-  a = gets.chomp.to_i
-  puts "what is the client's sex?"
-  s = gets.chomp.to_sym
-  new_person = Client.new(n, a, s)
-  object[new_person.name.downcase] = new_person
-  puts "You added #{new_person.name} to your client list."
-  puts object.values.join("\n")
-end
-
-def dog_adder(stock, customers)
+def add_dog(branch_or_client)
   puts "What's the dog called?"
   n = gets.chomp.downcase.to_s
   puts "What breed is it?"
@@ -62,21 +49,8 @@ def dog_adder(stock, customers)
   s = gets.chomp.downcase.to_sym
   puts "And what's it's favourite toy?"
   t = gets.chomp.downcase.to_s
-  new_dog = Animal.new(n, b, a, s, t)
-  puts "Add to (i)nventory or a (c)lient?"
-  response = gets.chomp.downcase
-  if response == "i"
-    stock[new_dog.name.downcase] = new_dog
-    puts "#{new_dog.name} has been added to inventory..."
-    puts stock.values.join("\n")
-  else
-    puts customers.values.join("\n")
-    puts "Which client?"
-    answer = gets.chomp.downcase.to_s
-    customers[answer].pets[new_dog.name.downcase] = new_dog
-    puts "#{new_dog.name} has been added to our records for #{answer}."
-  end
- end
+  branch_or_client.dog_adder(Animal.new(n, b, a, s, t))
+end
 
 #run the app
 
@@ -87,7 +61,7 @@ while condition
   puts "ANIMAL SHELTER MANAGEMENT SYSTEM"
   puts "----------------------------------"
   puts "\nPlease select an option:"
-  puts "Get (C)lient information"
+  puts "Get (c)lient information"
   puts "(A)dd a new client"
   puts "(D)isplay current inventory"
   puts "Check-(o)ut a dog"
@@ -96,41 +70,34 @@ while condition
   puts "Add a new dog to (r)ecords"
   response = gets.chomp.downcase
   case response
-   when 'c'
-      puts hq.clients.values.join("\n")
-    when 'a'
-     add_new_client(hq.clients)
-    when 'd'
-      puts hq.inventory.values.join("\n")
-    when 'o'
-      puts hq.clients.values.join("\n")
-      puts "\nWho is checking-out the animal?"
-      buyer = gets.chomp.downcase.to_s
-      puts "Which of the following would you like to check-out?"
-      puts "-----------------------------------------"
-      puts hq.inventory.values.join("\n")
-      puts "-----------------------------------------"
-      animal = gets.chomp.downcase
-      hq.check_out(animal, buyer)
-      puts "\nNew inventory..."
-      puts hq.inventory.values.join("\n")
-    when 'i'
-      puts hq.clients.values.join("\n")
-      puts "\nwho is checking-in the animal?"
-      seller = gets.chomp.downcase.to_s
-      puts hq.clients[seller].pets.values.join("\n")
-      puts "Which pet would you like to check_in?"
-      pet_name = gets.chomp.downcase.to_s
-      hq.clients[seller].give_up(pet_name, hq)
-      puts "\nNew inventory..."
-      puts hq.inventory.values.join("\n")
-    when 'v'
-      puts hq.clients.values.join("\n")
-      puts "\nWho's pets would you like to see?"
-      view = gets.chomp.downcase
-      puts hq.clients[view].pets.values.join("\n")
-    when 'r'
-      dog_adder(hq.inventory, hq.clients)
+  when 'c'
+      hq.list_clients
+  when 'a'
+     hq.new_client_record
+  when 'd'
+      hq.display_inventory
+  when 'o'
+      hq.check_out
+  when 'i'
+      hq.list_clients
+      puts "\nWho is checking-in the animal?"
+      seller = hq.clients[gets.chomp.downcase.to_s]
+      seller.give_up(hq)
+      hq.display_inventory
+  when 'v'
+      hq.list_clients
+      puts "\nWhose pets would you like to see?"
+      hq.clients[gets.chomp.downcase.to_s].display_pets
+  when 'r'
+      puts "Add to (i)nventory or a (c)lient?"
+      response = gets.chomp.downcase
+      if response == "i"
+        add_dog(hq)
+      else
+        puts "\nOK, which client?"
+        hq.list_clients
+        add_dog(hq.clients[gets.chomp.downcase.to_s])
+      end
   end
   puts "\nWould you like to run the program again or (q)uit?"
   condition = false if gets.chomp.downcase == "q"
