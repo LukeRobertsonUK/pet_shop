@@ -15,7 +15,7 @@ class Client
 
   def give_up(pet_name, shelter)
     receiver = shelter
-    pet = pets.delete[pet_name.downcase]
+    pet = pets.delete(pet_name.downcase)
     shelter.inventory[pet_name.downcase] = pet
   end
 

@@ -4,7 +4,6 @@ require_relative 'client'
 require_relative 'animal'
 require_relative 'shelter'
 
-
 #initialize existing objects
 hq = Shelter.new("Headquarters", "55 Clapham High Street")
 
@@ -50,18 +49,6 @@ def add_new_client(object)
   object[new_person.name.downcase] = new_person
   puts "You added #{new_person.name} to your client list."
   puts object.values.join("\n")
-end
-
-
-def check_in(stock, person, new_home)
-  puts "Which of the following would you like to check-in?"
-  puts "-----------------------------------------"
-  puts stock.values.join("\n")
-  puts "-----------------------------------------"
-  response = gets.chomp.downcase
-  new_home[response] = stock[response]
-  stock.delete(response)
-  puts "\n#{response} has been added to inventory..."
 end
 
 def dog_adder(stock, customers)
@@ -131,7 +118,11 @@ while condition
       puts hq.clients.values.join("\n")
       puts "\nwho is checking-in the animal?"
       seller = gets.chomp.downcase.to_s
-      check_in(hq.clients[seller].pets, hq.clients[seller], hq.inventory)
+      puts hq.clients[seller].pets.values.join("\n")
+      puts "Which pet would you like to check_in?"
+      pet_name = gets.chomp.downcase.to_s
+      hq.clients[seller].give_up(pet_name, hq)
+      puts "\nNew inventory..."
       puts hq.inventory.values.join("\n")
     when 'v'
       puts hq.clients.values.join("\n")

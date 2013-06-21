@@ -13,10 +13,10 @@ attr_accessor :name, :address, :inventory, :clients
   end
 
   def check_out(pet_name, client_name)
-    receiving_client = clients[client_name.downcase]
     pet = inventory.delete(pet_name.downcase)
-    receiving_client.pets[pet_name.downcase] = pet
-    puts "#{pet.name} now belongs to #{receiving_client.name}"
+    clients[client_name.downcase].pets[pet_name.downcase] = pet
+    puts "#{pet_name} now belongs to #{client_name}"
   end
+
 
 end
